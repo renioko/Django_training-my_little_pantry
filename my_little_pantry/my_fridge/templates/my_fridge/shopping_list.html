@@ -1,0 +1,12 @@
+<h2>Shopping list</h2>
+
+{% if missing_products %}
+<ul>
+    {% for item in missing_products %}
+    <li> {{ item.product.name }}</li>
+    {% endfor %}
+</ul>
+
+{% else %}
+Everything is in the fridge :-D
+{% endif %}

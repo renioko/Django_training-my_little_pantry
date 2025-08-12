@@ -1,0 +1,29 @@
+# Specyficzne dla Pythona
+*.pyc
+__pycache__/
+myvenv/
+env/
+.env
+
+# Baza danych
+db.sqlite3
+*.sqlite3
+
+
+# Pliki mediów i statyczne
+media/
+static_collected/
+
+# Wrażliwe dane i pliki konfiguracyjne
+local_settings.py
+.env
+.idea/  # Dla PyCharm
+.vscode/ # Dla Visual Studio Code
+
+# Pliki logów
+*.log
+logs/
+
+# Pliki tymczasowe systemów operacyjnych
+.DS_Store
+Thumbs.db

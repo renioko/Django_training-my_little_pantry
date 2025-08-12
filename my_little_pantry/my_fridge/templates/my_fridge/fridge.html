@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Fridge</title>
+</head>
+<body>
+    <h1>Fridge content:</h1>
+    {% if products %}
+    <ul>
+        {% for product in products %}
+        <li>
+            <strong>{{product.name}}</strong> - {{product.quantity}} {{product.unit}}.... use by: {{product.expiry_date}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Oops! Looks like your fridge is empty</p>
+    {% endif %}
+</body>
+</html>
