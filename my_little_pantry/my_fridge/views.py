@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import FridgeProductForm
 from .models import Product, FridgeProduct, DefaultProduct
@@ -25,8 +26,11 @@ def add_fridge_product(request):
                     user=request.user,
                     product=fridge_item.product
                 )
+            messages.success(request, "Product added")
 
-            return redirect('fridge_list') #przekierowanie na liste lodówki
+            return redirect('fridge')
+        else:
+            messages.error(request, "Error filling the form. Enter correct data")
     else:
         form = FridgeProductForm()
     return render(request, 'my_fridge/add_fridge_product.html', {'form': form})

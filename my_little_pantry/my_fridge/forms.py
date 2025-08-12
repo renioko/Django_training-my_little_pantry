@@ -7,9 +7,9 @@ class FridgeProductForm(forms.ModelForm):
         label="Add to default products",
     )
 
-class Meta:
-    model = FridgeProduct
-    fields = ['product', 'quantity', 'expiry_date', 'add_to_default']
-    widgets = {
-        'expiry_date': forms.DateInput(attrs={'type': 'date'}),
-        }
+    class Meta:
+        model = FridgeProduct
+        fields = ['product', 'quantity', 'expiry_date', 'add_to_default']
+        widgets = {
+            'expiry_date': forms.DateInput(attrs={'type': 'date'}),
+            }

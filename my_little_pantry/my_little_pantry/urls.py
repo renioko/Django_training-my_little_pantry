@@ -20,5 +20,5 @@ from django.urls import path, include  # dodaj include!
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('fridge/', include('my_fridge.urls')),  # <-- to włącza wszystkie URL-e z my_fridge/urls.py
-    path('shopping/', include('my_shopping_list.urls'))
+    # path('shopping/', include('my_shopping_list.urls'))
 ]
