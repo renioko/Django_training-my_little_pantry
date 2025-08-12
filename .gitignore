@@ -1,7 +1,7 @@
 # Specyficzne dla Pythona
 *.pyc
 __pycache__/
-myvenv/
+myyvenv/
 env/
 .env
 

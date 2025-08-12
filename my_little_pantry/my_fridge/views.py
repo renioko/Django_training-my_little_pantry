@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .forms import FridgeProductForm
 from .models import Product, FridgeProduct, DefaultProduct
 
 # Create your views here.
 
+@login_required
 def fridge_view(request):
-    products = FridgeProduct.objects.all().order_by('expiry_date')
+    products = FridgeProduct.objects.filter(user=request.user).order_by('expiry_date')
     return render(request, 'my_fridge/fridge.html', {'products': products})
 
+@login_required
 def add_fridge_product(request):
     if request.method == 'POST':
         form = FridgeProductForm(request.POST)
@@ -26,10 +29,9 @@ def add_fridge_product(request):
             return redirect('fridge_list') #przekierowanie na liste lodówki
     else:
         form = FridgeProductForm()
-    return render(request, 'my_fridhe/add_fridge_product.html', {'form': form})
+    return render(request, 'my_fridge/add_fridge_product.html', {'form': form})
 
-
-
+@login_required
 def shopping_list(request):
     default_products = DefaultProduct.objects.filter(user=request.user)
     fridge_item = FridgeProduct.objects.filter(user=request.user)
