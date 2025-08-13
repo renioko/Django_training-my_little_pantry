@@ -15,10 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from my_fridge.views import index
 from django.urls import path, include  # dodaj include!
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', index, name='index'),
     path('fridge/', include('my_fridge.urls')),  # <-- to włącza wszystkie URL-e z my_fridge/urls.py
     # path('shopping/', include('my_shopping_list.urls'))
 ]
