@@ -27,3 +27,6 @@ logs/
 # Pliki tymczasowe systemów operacyjnych
 .DS_Store
 Thumbs.db
+
+secret_data.txt
+secret_infos.py
