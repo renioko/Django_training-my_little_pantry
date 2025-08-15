@@ -10,7 +10,7 @@
     <ul>
         {% for product in products %}
         <li>
-            <strong>{{product.name}}</strong> - {{product.quantity}} {{product.unit}}.... use by: {{product.expiry_date}}
+            <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}},   use by: {{product.expiry_date}}
         </li>
         {% endfor %}
     </ul>

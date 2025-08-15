@@ -10,6 +10,12 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} - unit: {self.unit}"
     
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name = self.name.strip().lower()
+        super().save(*args, **kwargs)    
+
+    
 class FridgeProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
