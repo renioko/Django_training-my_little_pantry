@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_fridge',
+    'shopping_list'
 ]
 
 MIDDLEWARE = [
