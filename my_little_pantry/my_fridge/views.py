@@ -11,8 +11,8 @@ from .models import Product, FridgeProduct, DefaultProduct
 def index(request):
     return render(request, 'my_fridge/index.html', {})
 
-def logged_in_view(request):
-    return render(request, 'my_fridge/logged_in.html')
+# def logged_in_view(request):
+#     return render(request, 'my_fridge/logged_in.html')
 
 
 @login_required
