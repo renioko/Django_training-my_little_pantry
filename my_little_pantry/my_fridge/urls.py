@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import fridge_view, add_fridge_product, shopping_list, remove_fridge_product  # importujemy widok
+from .views import fridge_view, add_fridge_product, remove_fridge_product  # importujemy widok
 
 urlpatterns = [
     path('', fridge_view, name='fridge'),  # /fridge/ będzie uruchamiać fridge_view

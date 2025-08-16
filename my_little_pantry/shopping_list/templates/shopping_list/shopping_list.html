@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping list</title>
+</head>
+<body>
+    <h1>Shopping list:</h1>
+    {% if products %}
+    {% for product in products %}
+    <li><strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}} {{is_important}} </li>
+    {% endfor %}
+    {% else %}
+    <p>Your Shopping list is empty!</p>
+    {% endif %}
+    <a href="{% url 'index' %}">Back to home</a>
+</body>

@@ -4,10 +4,8 @@ from django.utils import timezone
 from my_fridge.models import Product
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 # Create your models here.
 
-@login_required
 class ShoppingListProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -17,6 +15,8 @@ class ShoppingListProduct(models.Model):
     def __str__(self):
         if self.is_important:
             is_important = '!'
+        else:
+            is_important = ''
 
         return f"{self.product.name} - {self.quantity} {self.product.unit} {is_important}"
     

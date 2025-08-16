@@ -11,6 +11,9 @@ from .models import Product, FridgeProduct, DefaultProduct
 def index(request):
     return render(request, 'my_fridge/index.html', {})
 
+def logged_in_view(request):
+    return render(request, 'my_fridge/logged_in.html')
+
 
 @login_required
 def fridge_view(request):
@@ -93,19 +96,6 @@ def remove_fridge_product(request):
     else:
         form = DeleteFridgeProduct(request.user)
         return render(request, 'my_fridge/remove_fridge_product.html', context={'form': form})
-
-# for the future:
-@login_required
-def shopping_list(request):
-    default_products = DefaultProduct.objects.filter(user=request.user)
-    fridge_item = FridgeProduct.objects.filter(user=request.user)
-    fridge_product_ids = fridge_item.values_list('product_id', flat=True) #co to oznacza
-
-    missing_products = default_products.exclude(product_id__in=fridge_product_ids)
-
-    return render(request, 'my_fridge/shopping_list.html', {
-        'missing_products': missing_products
-    })
 
 
 
