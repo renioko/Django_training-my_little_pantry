@@ -23,5 +23,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', index, name='index'),
     path('fridge/', include('my_fridge.urls')),  # <-- to włącza wszystkie URL-e z my_fridge/urls.py
-    # path('shopping/', include('my_shopping_list.urls'))
+    path('shopping/', include('shopping_list.urls'))
 ]
