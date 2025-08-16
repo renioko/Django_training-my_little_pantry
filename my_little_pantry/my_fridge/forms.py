@@ -50,3 +50,18 @@ class FridgeProductForm(forms.ModelForm):
         return cleaned_data
 
         
+class DeleteFridgeProduct(forms.Form):
+    removed_product = forms.ChoiceField(label='Product to remove')
+    quantity = forms.IntegerField(max_value=1000, min_value=0, required=True)
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # dynamicznie tworzymy choices tylko dla produktów tego użytkownika - odqolujemy sie do zmiennej removed_product, pod polem w formie, ktore tworzymy powyzej. teraz uzypełniamy je o konkretny wybór
+        self.fields['removed_product'].choices=[(item.id, f"{item.product.name} - {item.quantity} {item.product.unit}") for item in FridgeProduct.objects.filter(user=user)]
+
+
+# jesli bym tak zostawila to serwer zaladuje tylko raz, a pozniej uzytkownicy moga cos dodac i to sie juz by nie zaladowało. dlatego trzeba byłododac __init__ jak powyzej
+    # removed_product = forms.ChoiceField(choices=((item.id, item.product.name) for item in FridgeProduct.objects.all()), label='Product to remove')
+    # quantity = forms.IntegerField(max_value=1000, min_value=0, required=True)
+
+
