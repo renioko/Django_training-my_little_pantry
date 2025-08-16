@@ -17,5 +17,10 @@
     {% else %}
     <p>Oops! Looks like your fridge is empty</p>
     {% endif %}
+
+
+    <form action="{% url 'index' %}" method="get">
+        <button type="submit">Back to home</button>
+    </form>
 </body>
 </html>
