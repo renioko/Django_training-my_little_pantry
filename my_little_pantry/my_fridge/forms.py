@@ -25,17 +25,6 @@ class FridgeProductForm(forms.ModelForm):
         widgets = {
             'expiry_date': forms.DateInput(attrs={'type': 'date'}),
             }
-        
-    # def clean_product(self):
-    #     product = self.cleaned_data['product']
-    #     name = product.strip().lower()
-    #     unit = self.cleaned_data['unit']
-    #     product, create = Product.objects.get_or_create(
-    #         name=name,
-    #         defaults={'unit': unit}
-
-    #     )
-    #     return product
 
     def clean(self):
         cleaned_data = super().clean()
