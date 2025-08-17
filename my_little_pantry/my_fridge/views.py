@@ -32,7 +32,8 @@ def add_by_aggregating_product(product, user):
         expiry_date = product.expiry_date
         )
     if querry_set.exists():
-        querry_set.update(quantity= F('quantity') +1)
+        quantity = product.quantity
+        querry_set.update(quantity= F('quantity') + quantity)
         return True
     else:
         return False

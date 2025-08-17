@@ -90,8 +90,6 @@ def add_product_to_shopping_list(request):
             # Użyj form.save() - nie twórz produktu ręcznie
             shopping_list_product = form.save(commit=False) # tutaj z Meta(w form) jest tworony ShoppingListProduct
             shopping_list_product.user = request.user
-            # shopping_list_product.unit = form.cleaned_data['unit']  # Dodaj unit z formularza - nie trzeba, jest dodany do Product, a ProductShoppingList go nie uzywa
-            # nowa czesc - aggregating products:
             updated = add_by_aggregating_product(shopping_list_product, request.user)
             if not updated:
                 shopping_list_product.save()
