@@ -5,6 +5,14 @@
     <title>My Fridge</title>
 </head>
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <h1>Fridge content:</h1>
     {% if products %}
     <ul>

@@ -41,6 +41,11 @@ def add_by_aggregating_product(product, user):
 @login_required
 def add_fridge_product(request):
     if request.method == 'POST':
+        messages_storage = messages.get_messages(request)
+        for message in messages_storage:
+            pass
+        # to zuzywa stare messages
+
         form = FridgeProductForm(request.POST)
         if form.is_valid():
             fridge_item = form.save(commit=False)
@@ -55,6 +60,7 @@ def add_fridge_product(request):
                     user=request.user,
                     product=fridge_item.product
                 )
+                messages.success(request, 'Product added to default fridge product')
             messages.success(request, "Product added or updated")
 
             return redirect('fridge')

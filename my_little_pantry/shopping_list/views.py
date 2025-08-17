@@ -80,6 +80,11 @@ def add_by_aggregating_product(product, user):
 @login_required
 def add_product_to_shopping_list(request):
     if request.method == 'POST':
+        # czyszcze messages:
+        message_storage = messages.get_messages(request)
+        for message in message_storage:
+            pass
+        # to czysci stare messages
         form = AddShoppingProductForm(request.POST)
         if form.is_valid():
             # Użyj form.save() - nie twórz produktu ręcznie
