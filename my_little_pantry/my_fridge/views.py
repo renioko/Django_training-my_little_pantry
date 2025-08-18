@@ -14,6 +14,13 @@ def index(request):
 # def logged_in_view(request):
 #     return render(request, 'my_fridge/logged_in.html')
 
+def check_defaults_and_create_shopping_list(user):
+    default_fridge_products = DefaultProduct.objects.filter(user=user)
+    products_in_fridge = FridgeProduct.objects.filter(user=user).values_list('product', flat=True) # values_list odwoluje sie do 'product'FK czyli do Product. dlatego nie uzywam 'id' tylko 'product'
+
+    missing_products = [product for product in default_fridge_products if product.product.id not in products_in_fridge]
+    return missing_products
+    # odwolujemy sie do product.product.id bo interesuje nas podstawowy id Product a nie id produktu u tego uzytkownika - dlatego, ze id produktów pochodnych są rozne i niezalezne od Product a przez to niemozliwe do porownywania
 
 @login_required
 def fridge_view(request):

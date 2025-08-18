@@ -127,3 +127,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+## wylogowywanie:##
+# Automatyczne wylogowanie po zamknięciu przeglądarki
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+#sesja wygasa po 20 min
+SESSION_COOKIE_AGE = 1200
+# Cookie sesji nie będzie dostępne przez JavaScript (bezpieczeństwo)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False # true in production
+# Czyść sesje przy każdym restarcie serwera
+SESSION_SAVE_EVERY_REQUEST = True # Odświeża czas sesji przy każdym request
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# + wyczyść stare sesje w cron lub management command
+# python manage.py clearsessions
