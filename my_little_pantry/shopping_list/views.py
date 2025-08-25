@@ -4,61 +4,77 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .forms import AddShoppingProductForm
+from .forms import AddShoppingProductForm, GenerateShoppingListActivate
 from my_fridge.models import Product, DefaultProduct
 from .models import ShoppingListProduct, DefaultShoppingProduct
+from my_fridge.models import DefaultProduct, FridgeProduct
 from my_fridge.views import index
+from typing import List, Any, Set
 
 # Create your views here.
 
 # def index()
 
+def get_missing_products(user: Any) -> List[int]:
+    """
+    Checks if all DefaultProducts are in the fridge (FridgeProduct).
+    Returns list of missing products as Product ids.
+    """
+    default_fridge_products = DefaultProduct.objects.filter(user=user)
+    # values_list odwoluje sie do 'product'FK czyli do Product. dlatego nie uzywam 'id' tylko 'product' poniżej:
+    products_in_fridge = FridgeProduct.objects.filter(user=user).values_list('product', flat=True)
+    missing_products_ids = [product.product.id for product in default_fridge_products if product.product.id not in products_in_fridge]
+    return missing_products_ids
+# dodatkowe wyjasnienie:     # odwolujemy sie do product.product.id bo interesuje nas podstawowy id Product a nie id produktu u tego uzytkownika - dlatego, ze id produktów pochodnych są rozne i niezalezne od Product a przez to niemozliwe do porownywania
+
+def generate_shopping_list(request: Any) -> Set[int]:
+    """
+    Get list of missing_products_ids and combines it with products added to shopping list by user. Returns set of ids"""
+    user = request.user
+    missing_products_ids = get_missing_products(user)
+    shopping_list_items = ShoppingListProduct.objects.filter(user=user).values_list('product', flat=True)
+    items_to_buy = [*missing_products_ids,*shopping_list_items]
+    return set(items_to_buy)
+
+def create_product_from_ids(products_ids: List[int], user) -> List[ShoppingListProduct]:
+    """
+    Create list of ShoppingListProducts from list of Product ids.
+    """
+    products = []
+    for i in products_ids:
+        # product, created = ShoppingListProduct.objects.filter(user=user).get_or_create(defaults=['product', i])
+        product, created = ShoppingListProduct.objects.get_or_create(
+            user=user,
+            # defaults=['product', i])
+            product = i,
+            defaults={'quantity': 1})
+        products.append(product)
+    return products # to lista ids czy obiektów?
+
 @login_required
 def shopping_list(request):
     products = ShoppingListProduct.objects.filter(user=request.user)
-    return render(request, 'shopping_list/shopping_list.html', context={'products': products})
+    if request.method == 'POST':
+        form = GenerateShoppingListActivate(request.POST)
+        if form.is_valid():
+            generate_shopping_list_activated = form.cleaned_data['generate_shopping_list_activated']
+            if generate_shopping_list_activated:
+                messages.success(request, "Shopping list generated")
+                products_ids = generate_shopping_list(request) # add handling of empty set in template
+                created_products = create_product_from_ids(products_ids, request.user) 
+                if created_products:
+                    products = ShoppingListProduct.objects.filter(user=request.user) # ponownie pobieram z bazy
 
-# @login_required
-# def add_product_to_shopping_list(request):
-#     if request.method == 'POST':
-#         form = AddShoppingProductForm(request.POST)
-#         if not form.is_valid():
-#             messages.error(request, 'Error - check your input.')
-#             return render(request, 'add_product_to_shopping_list.html', context={'form':form})
-#         else:
-#             product_name = form.cleaned_data['product'] # nie robie strip lower bo juz clean() to robi
-#             unit = form.cleaned_data['unit']
-#             product, created = Product.objects.get_or_create(name=product_name, defaults={'unit':unit})
-#             if created:
-#                 messages.success(request, 'Product created.')
+            else:
+                messages.error(request, "Shopping list could not be generated")
 
-#             shopping_list_product = ShoppingListProduct(
-#                 user=request.user,
-#                 product=product,
-#                 quantity=form.cleaned_data['quantity'],
-#                 unit=form.cleaned_data['unit'],
-#                 is_important=form.cleaned_data['is_important']
-#             )
-#             shopping_list_product.save()
-#             messages.success(request, 'Product added to shopping list.')
-
-#             is_default = form.cleaned_data['add_to_default']
-#             if is_default:
-#                 default_product, created = DefaultShoppingProduct.objects.get_or_create(
-#                     user=request.user,
-#                     product=form.cleaned_data['product']
-#                 )
-#                 if created:
-#                     messages.success(request, 'Product added to default shopping products')
-
-#         return render(
-#             request,
-#             'add_product_to_shopping_list.html', 
-#             context={'form':form, 'shopping_list_product':shopping_list_product}
-#             )
-#     else:
-#         form = AddShoppingProductForm()
-#         return render(request, 'add_product_to_shopping_list.html', context={'form': form})
+        # return redirect(request, 'shopping_list', context={'products': products}) 
+        return redirect('shopping_list')  
+    else:
+        form = GenerateShoppingListActivate()
+        return render(request, 'shopping_list/shopping_list.html', context={
+            'products': products,
+            'form': form})
 
 def add_by_aggregating_product(product, user):
     """Checks if product id in the fridge. 

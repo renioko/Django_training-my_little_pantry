@@ -18,7 +18,10 @@
     <ul>
         {% for product in products %}
         <li>
-            <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}},   use by: {{product.expiry_date}}
+            <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}},   use by: {{product.expiry_date}} 
+            {% if product.is_default_product %}
+                <span style="color: darkgreen;">(default)</span>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>

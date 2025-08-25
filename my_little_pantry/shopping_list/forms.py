@@ -83,3 +83,10 @@ class AddShoppingProductForm(forms.ModelForm):
             cleaned_data['product'] = product # tutaj do slownika cleaned_data jest przekazany obiekt
 
         return cleaned_data
+
+class GenerateShoppingListActivate(forms.Form):
+        # nowa rzecz 
+    generate_shopping_list_activated = forms.BooleanField(
+        required=False,
+        label='Generate Shopping list'
+    )
