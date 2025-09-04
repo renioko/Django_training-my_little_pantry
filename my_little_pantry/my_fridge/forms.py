@@ -53,4 +53,7 @@ class DeleteFridgeProduct(forms.Form):
     # removed_product = forms.ChoiceField(choices=((item.id, item.product.name) for item in FridgeProduct.objects.all()), label='Product to remove')
     # quantity = forms.IntegerField(max_value=1000, min_value=0, required=True)
 
-
+class ExpiredProductsChecker(forms.Form):
+    check_for_expired = forms.BooleanField(
+        required=False,
+        label='Check for expired products')

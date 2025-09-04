@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Fridge</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if expired_products %}
+    <h1> Expired products:</h1>
+    <ul>
+        {% for ep in expired_products %}
+        <li><strong></strong>{{ep.product.name}}</strong> expired at: {{ep.expiry_date}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form action="{% url 'index' %}" method="get">
+        <button type="submit">Back to home</button>
+    </form>
+
+</body>

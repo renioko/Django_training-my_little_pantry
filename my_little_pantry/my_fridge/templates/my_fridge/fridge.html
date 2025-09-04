@@ -40,6 +40,12 @@
     {% endif %}
     </ul>
 
+    <form method="post">
+            {% csrf_token %}
+            <!-- {{ form.as_p }} -->
+            <p>Check if your products are up to date:</p>
+            <button type="submit">Check for expired products</button>
+    </form>
 
 
 
