@@ -29,6 +29,19 @@
     <p>Oops! Looks like your fridge is empty</p>
     {% endif %}
 
+    {% if default_products %}
+    <h1>Default products: </h1>
+    <ul>
+        {% for dp in default_products %}
+        <li>
+            <strong>{{dp.product.name}}</strong>
+        </li>
+        {% endfor %}
+    {% endif %}
+    </ul>
+
+
+
 
     <form action="{% url 'index' %}" method="get">
         <button type="submit">Back to home</button>

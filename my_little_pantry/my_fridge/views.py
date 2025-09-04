@@ -15,7 +15,8 @@ def index(request):
 @login_required
 def fridge_view(request):
     products = FridgeProduct.objects.filter(user=request.user).order_by('expiry_date')
-    return render(request, 'my_fridge/fridge.html', {'products': products})
+    default_products = DefaultProduct.objects.filter(user=request.user)
+    return render(request, 'my_fridge/fridge.html', {'products': products, 'default_products': default_products})
 
 
 def add_by_aggregating_product(product, user):
