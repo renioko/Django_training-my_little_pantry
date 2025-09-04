@@ -15,6 +15,13 @@ from typing import List, Any, Set
 
 # def index()
 
+# 🚩 nie dodawane są default products do shopping list, chociaz sama lista sie wyswietla 
+# 1. stworzyc nowego uzytkownika
+# 2. dodac default products
+# 3. po usunieciu z lodówki produkt powinien sie generowac w shopping list
+
+# 🚩 w lodówce powiniejn byc przycisk 'usun przeterminowane produkty', ktory usunie je z lodówki (ale nie z Products i z defaults) i wyswietli liste produktów do usuniecia - ‼️ i poprosi o potwierdzenie ❗
+
 def get_missing_products(user: Any) -> List[int]:
     """
     Checks if all DefaultProducts are in the fridge (FridgeProduct).
