@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <title>Shopping list</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %} Shopping list {% endblock %}
+
+{% block content %}
 
     {% if messages %}
         {% for message in messages %}
@@ -13,22 +12,21 @@
         {% endfor %}
     {% endif %}
 
-    {% block content %}
-        <h1>Shopping list:</h1>
-        {% if products %}
+    <h1>Shopping list:</h1>
+    {% if products %}
         {% for product in products %}
-        <li><strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}} {{is_important}} </li>
+            <li><strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}} {{is_important}} </li>
         {% endfor %}
-        {% else %}
+    {% else %}
         <p>Your Shopping list is empty!</p>
-        {% endif %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p>Now you can check if something is missing in the fridge and generate shopping list!</p>
-            <button type="submit"> Generate shopping list</button>
-        </form>
+    {% endif %}
 
-        <a href="{% url 'index' %}">Back to home</a>
-    {% endblock %}
-</body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>Now you can check if something is missing in the fridge and generate shopping list!</p>
+        <button type="submit"> Generate shopping list</button>
+    </form>
+    <p> </p>
+
+{% endblock %}

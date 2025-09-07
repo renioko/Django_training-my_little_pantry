@@ -1,13 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Add fridge product {% endblock %}
+
+{% block content %}
+
 <h2>Add product to the fridge</h2>
 
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit">Add</button>
+    <button type="submit">Add product</button>
 </form>
+<p> </p>
+<!-- <a href="{% url 'index' %}"> Back</a> -->
 
-<a href="{% url 'index' %}"> Back</a>
-
-<form action="{% url 'index' %}" method="get">
+<!-- <form action="{% url 'index' %}" method="get">
     <button type="submit">Back to home page</button>
-</form>
+</form> -->
+
+{% endblock %}

@@ -1,18 +1,16 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <title>Remove fridge product</title> 
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Choose product to remove:</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Remove product</button>
-    </form>
-    <a href="{% url 'index' %}">Back to home</a>
-    <form action="{% url 'index' %}">
-        <button type="submit">Back to home page</button>
-    </form>
-</body>
+{% block title %}Remove fridge product {% endblock %}
+
+{% block content %}
+
+
+<h1>Choose product to remove:</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Remove product</button>
+</form>
+<p> </p>
+
+{% endblock %}

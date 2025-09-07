@@ -1,4 +1,25 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %}My little pantry{% endblock %}</title>
+    
+    {% block extra_head %} {% endblock %}
+</head>
+<header>
+{% if user.is_authenticated %}
+<p> Welcome {{user.username}}!</p>
+
+<form action="{% url 'logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+</header>
+
 {% block content %}
 
     <h1> Welcome to My little pantry</h1>
@@ -10,9 +31,6 @@
         <li><a href="{% url 'remove_fridge_product' %}">Remove fridge product</a></li>
         <li><a href="{% url 'shopping_list' %}">Shopping list</a></li>
         <li><a href="{% url 'add_product_to_shopping_list' %}">Add product to shopping list</a></li>
-        <!-- <li><a href="{% url 'logout' %}">Logout</a></li> -->
-
-        
     </ul>
 
 {% endblock %}
