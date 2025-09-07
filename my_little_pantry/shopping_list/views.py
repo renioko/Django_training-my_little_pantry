@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .forms import AddShoppingProductForm, GenerateShoppingListActivate
+from shopping_list.forms import AddShoppingProductForm, GenerateShoppingListActivate
 from my_fridge.models import Product, DefaultProduct
 from .models import ShoppingListProduct, DefaultShoppingProduct
 from my_fridge.models import DefaultProduct, FridgeProduct
@@ -28,35 +28,44 @@ def get_missing_products(user: Any) -> List[int]:
     Returns list of missing products as Product ids.
     """
     default_fridge_products = DefaultProduct.objects.filter(user=user)
+    # print(default_fridge_products)
     # values_list odwoluje sie do 'product'FK czyli do Product. dlatego nie uzywam 'id' tylko 'product' poniżej:
     products_in_fridge = FridgeProduct.objects.filter(user=user).values_list('product', flat=True)
+    # print(products_in_fridge)
     missing_products_ids = [product.product.id for product in default_fridge_products if product.product.id not in products_in_fridge]
+    # print(missing_products_ids)
     return missing_products_ids
 # dodatkowe wyjasnienie:     # odwolujemy sie do product.product.id bo interesuje nas podstawowy id Product a nie id produktu u tego uzytkownika - dlatego, ze id produktów pochodnych są rozne i niezalezne od Product a przez to niemozliwe do porownywania
 
 def generate_shopping_list(request: Any) -> Set[int]:
     """
     Get list of missing_products_ids and combines it with products added to shopping list by user. Returns set of ids"""
+    print('hello generate')
     user = request.user
     missing_products_ids = get_missing_products(user)
+    print(missing_products_ids)
     shopping_list_items = ShoppingListProduct.objects.filter(user=user).values_list('product', flat=True)
+    print(shopping_list_items)
     items_to_buy = [*missing_products_ids,*shopping_list_items]
+    print(items_to_buy)
     return set(items_to_buy)
+    # return []
 
 def create_product_from_ids(products_ids: List[int], user) -> List[ShoppingListProduct]:
     """
     Create list of ShoppingListProducts from list of Product ids.
     """
-    products = []
+    shopping_products = []
     for i in products_ids:
         # product, created = ShoppingListProduct.objects.filter(user=user).get_or_create(defaults=['product', i])
-        product, created = ShoppingListProduct.objects.get_or_create(
+        shopping_product = ShoppingListProduct.objects.create(
             user=user,
-            # defaults=['product', i])
-            product = i,
-            defaults={'quantity': 1})
-        products.append(product)
-    return products # to lista ids czy obiektów?
+            product = Product.objects.get(pk=i) #foreign key do Product - bez tego wywolania mam bład: Cannot assign "4": "ShoppingListProduct.product" must be a "Product" instance.""
+            # product=i # to wywalało blad, bo musi byc Product instance
+            )
+        shopping_products.append(shopping_product)
+        print(f'shopping list products: {shopping_products}')
+    return shopping_products # to lista ids czy obiektów?
 
 @login_required
 def shopping_list(request):
@@ -65,6 +74,7 @@ def shopping_list(request):
         form = GenerateShoppingListActivate(request.POST)
         if form.is_valid():
             generate_shopping_list_activated = form.cleaned_data['generate_shopping_list_activated']
+            print('hello world')
             if generate_shopping_list_activated:
                 messages.success(request, "Shopping list generated")
                 products_ids = generate_shopping_list(request) # add handling of empty set in template
@@ -138,8 +148,4 @@ def add_product_to_shopping_list(request):
         form = AddShoppingProductForm()
     
     return render(request, 'add_product_to_shopping_list.html', context={'form': form})
-
-
-def generate_shopping_list(request):
-    pass
 
