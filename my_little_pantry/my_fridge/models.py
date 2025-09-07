@@ -15,7 +15,7 @@ class Product(models.Model):
             self.name = self.name.strip().lower()
         super().save(*args, **kwargs)    
 
-    
+
 class FridgeProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -29,6 +29,7 @@ class FridgeProduct(models.Model):
     def show_expiry_date(self):
         return f"{self.product.name} - expires on {self.expiry_date}"
     
+    @property
     def is_fresh(self):
         """
         Returns True if products is not expired, otherwise False.

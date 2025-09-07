@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Fridge</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}y fridge {% endblock %}
+
+{% block content %}
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{message.tags}}">
@@ -15,42 +13,35 @@
 
     <h1>Fridge content:</h1>
     {% if products %}
-    <ul>
-        {% for product in products %}
-        <li>
-            <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}},   use by: {{product.expiry_date}} 
-            {% if product.is_default_product %}
-                <span style="color: darkgreen;">(default)</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for product in products %}
+
+            <li class="{% if product.is_fresh %}fresh{% else %}expired{% endif %}">
+                <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}}, use by: {{product.expiry_date}}
+                {% if product.is_default_product %}
+                    <span style="color: darkgreen;"> (default) </span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
     {% else %}
-    <p>Oops! Looks like your fridge is empty</p>
+        <p>Oops! Looks like your fridge is empty</p>
     {% endif %}
 
     {% if default_products %}
-    <h1>Default products: </h1>
-    <ul>
-        {% for dp in default_products %}
-        <li>
-            <strong>{{dp.product.name}}</strong>
-        </li>
-        {% endfor %}
-    {% endif %}
-    </ul>
-
-    <form method="post">
-            {% csrf_token %}
-            <!-- {{ form.as_p }} -->
-            <p>Check if your products are up to date:</p>
-            <button type="submit">Check for expired products</button>
-    </form>
+        <h1>Default products: </h1>
+            <ul>
+                {% for dp in default_products %}
+                <li>
+                    <strong>{{dp.product.name}}</strong>
+                </li>
+                {% endfor %}
+            {% endif %}
+            </ul>
+{% endblock %}
 
 
-
+<!-- 
     <form action="{% url 'index' %}" method="get">
         <button type="submit">Back to home</button>
-    </form>
-</body>
-</html>
+    </form> -->
