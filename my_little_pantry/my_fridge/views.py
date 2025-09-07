@@ -16,18 +16,18 @@ def index(request):
 def fridge_view(request):
     products = FridgeProduct.objects.filter(user=request.user).order_by('expiry_date')
     default_products = DefaultProduct.objects.filter(user=request.user)
-    if request.method == 'POST': # czy zrobic z tego oddzielny view?
-        # form = ExpiredProductsChecker(request.POST)
-        # if form.is_valid():
-            # check_expired_activated = form.cleaned_data['check_for_expired']
-            # if check_expired_activated:
-        messages.success(request, 'Checked for expired products.')
-        fresh_products = [p for p in products if p.is_fresh()]
-        expired_products = [p for p in products if not p.is_fresh()]
-        return render(request, 'my_fridge/expired.html', {
-            'fresh_products': fresh_products,
-            'expired_products': expired_products
-        })
+    # if request.method == 'POST': # czy zrobic z tego oddzielny view?
+    #     # form = ExpiredProductsChecker(request.POST)
+    #     # if form.is_valid():
+    #         # check_expired_activated = form.cleaned_data['check_for_expired']
+    #         # if check_expired_activated:
+    #     messages.success(request, 'Checked for expired products.')
+    #     fresh_products = [p for p in products if p.is_fresh()] # do usuniecia
+    #     expired_products = [p for p in products if not p.is_fresh()] # do usuniecia
+    #     return render(request, 'my_fridge/expired.html', {  # do usuniecia
+    #         'fresh_products': fresh_products, # do usuniecia
+    #         'expired_products': expired_products # do usuniecia
+    #     }) # do usuniecia
 
     return render(request, 'my_fridge/fridge.html', {
         'products': products, 
