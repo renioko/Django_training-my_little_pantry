@@ -14,42 +14,51 @@ def index(request):
 
 @login_required
 def fridge_view(request):
-    products = FridgeProduct.objects.filter(user=request.user).order_by('expiry_date')
+    """
+    Shows the list of available products in the fridge.
+    """
+    fridge_products = FridgeProduct.objects.filter(user=request.user).order_by('expiry_date')
     default_products = DefaultProduct.objects.filter(user=request.user)
-    # if request.method == 'POST': # czy zrobic z tego oddzielny view?
-    #     # form = ExpiredProductsChecker(request.POST)
-    #     # if form.is_valid():
-    #         # check_expired_activated = form.cleaned_data['check_for_expired']
-    #         # if check_expired_activated:
-    #     messages.success(request, 'Checked for expired products.')
-    #     fresh_products = [p for p in products if p.is_fresh()] # do usuniecia
-    #     expired_products = [p for p in products if not p.is_fresh()] # do usuniecia
-    #     return render(request, 'my_fridge/expired.html', {  # do usuniecia
-    #         'fresh_products': fresh_products, # do usuniecia
-    #         'expired_products': expired_products # do usuniecia
-    #     }) # do usuniecia
 
     return render(request, 'my_fridge/fridge.html', {
-        'products': products, 
+        'fridge_products': fridge_products, 
         'default_products': default_products,
-        # 'form': form
         })
 
-# @login_required
-# def check_expired_view(request):
-#     products = FridgeProduct.objects.filter(user=request.user)
-#     if request.method =='POPT':   
-#         form = ExpiredProductsChecker(request.POST)
-#         if form.is_valid():
-#             check_expired_activated = form.cleaned_data['check_for_expired']
-#             if check_expired_activated:
-#                 messages.success(request, 'Checked for expired products.')
-#                 fresh_products = [p for p in products if p.is_fresh()]
-#                 expired_products = [p for p in products if not p.is_fresh()]
-#         return render(request, 'my_fridge/expired.html', {
-#             'fresh_products': fresh_products,
-#             'expired_products': expired_products
-#         })
+@login_required
+def check_expired_view(request):
+    """
+    Shows the list of expired products and asks for a confirmation to delete them.
+    """
+    # if request.method == 'POST':
+    fridge_products = FridgeProduct.objects.filter(user=request.user) 
+    expired_products = [p for p in fridge_products if not p.is_fresh] # is fresh juz nie jest metodą, tylko atrybutem (przez property)
+    if expired_products:
+        return render(request, 'my_fridge/expired.html', {
+            "expired_products": expired_products
+        })
+    else:
+        messages.error(request, 'No expired products to remove')
+        return redirect('fridge')
+
+@login_required
+def remove_expired_fridge_products(request):
+    """
+    Removes all expired products from the fridge after receiving a confirmation.
+    """
+    fridge_products = FridgeProduct.objects.filter(user=request.user)
+    if request.method == 'POST':
+        expired_products = [p for p in fridge_products if not p.is_fresh]
+        if expired_products:
+            for ep in expired_products:
+                ep.delete()
+            messages.success(request, "Expired products removed successfully.")
+            # return render(request, 'fridge.html', )
+        else:
+            messages.error(request, "No expired products found.")
+        return redirect('fridge')
+    # else:
+    #     render(request, 'my_fridge/fridge.html')
 
 def add_by_aggregating_product(product, user):
     """Checks if product id in the fridge. 
@@ -135,6 +144,7 @@ def remove_fridge_product(request):
 
 
 
+    
 
 
 # def aggregate_product(product, user):

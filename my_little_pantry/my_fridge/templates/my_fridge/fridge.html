@@ -3,18 +3,11 @@
 {% block title %} My fridge {% endblock %}
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{message.tags}}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
 
     <h1>Fridge content:</h1>
-    {% if products %}
+    {% if fridge_products %}
         <ul>
-            {% for product in products %}
+            {% for product in fridge_products %}
 
             <li class="{% if product.is_fresh %}fresh{% else %}expired{% endif %}">
                 <strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}}, use by: {{product.expiry_date}}
@@ -27,16 +20,22 @@
     {% else %}
         <p>Oops! Looks like your fridge is empty</p>
     {% endif %}
+    
+    <p>You can remove all expired products at once: </p>
+    <form action="{% url 'expired' %}" method="get">
+        {% csrf_token %}
+        <button type="submit">Remove expired products</button>
+    </form>
 
     {% if default_products %}
         <h1>Default products: </h1>
-            <ul>
-                {% for dp in default_products %}
-                <li>
-                    <strong>{{dp.product.name}}</strong>
-                </li>
-                {% endfor %}
-            {% endif %}
-            </ul>
+        <ul>
+            {% for dp in default_products %}
+            <li>
+                <strong>{{dp.product.name}}</strong>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
 

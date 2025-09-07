@@ -30,7 +30,7 @@ class FridgeProduct(models.Model):
         return f"{self.product.name} - expires on {self.expiry_date}"
     
     @property
-    def is_fresh(self):
+    def is_fresh(self): # teraz nto bedzie juz atrybut a nie funkcja - wywoływanie bez nawiasów
         """
         Returns True if products is not expired, otherwise False.
         """
