@@ -149,3 +149,22 @@ def remove_fridge_product_list(request):
 
         return redirect('fridge')
     return render(request, 'my_fridge/remove_list_products.html', {'fridge_products': fridge_products} )
+
+    #  ====
+@login_required
+def remove_products_checkboxes_form(request):
+    if request.method == 'POST':
+        form = DeleteFridgeProductList(request.POST)
+        form.fields['products'].queryset = FridgeProduct.objects.filter(user=request.user)
+
+        if form.is_valid():
+            products_to_delete = form.cleaned_data['products']
+            count = products_to_delete.count()
+            products_to_delete.delete()
+            messages.success(request, f"{count} products deleted successfully")
+            return redirect('fridge')
+    else:
+        form = DeleteFridgeProductList()
+        form.fields['products'].queryset = FridgeProduct.objects.filter(user=request.user)
+    return render(request, 'my_fridge/remove_products_form.html', {'form': form })
+

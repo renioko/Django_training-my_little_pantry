@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import fridge_view, add_fridge_product, remove_fridge_product, check_expired_view, remove_expired_fridge_products, remove_fridge_product_list
+from .views import fridge_view, add_fridge_product, remove_fridge_product, check_expired_view, remove_expired_fridge_products, remove_fridge_product_list, remove_products_checkboxes_form
 
 # app_name = 'my_fridge'
 
@@ -10,6 +10,8 @@ urlpatterns = [
     path('expired/',check_expired_view, name='expired'), #fridge/remove_all_expired
     path('remove_expired', remove_expired_fridge_products, name='remove_expired'),
     path('remove_list_products/', remove_fridge_product_list, name='remove_list_products'),
+    path('remove_products_form/', remove_products_checkboxes_form, name='remove_products_form')
+
 ]
 
 # to bedzie w aplikacji my_shopping_list

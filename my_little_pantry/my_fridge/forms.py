@@ -59,6 +59,12 @@ class ExpiredProductsChecker(forms.Form):
         required=False, 
         label='Check for expired products')
 
-# class DeleteFridgeProductList(forms.ModelForm):
+class DeleteFridgeProductList(forms.Form):
 #     # to_remove = forms.BooleanField(label='to_remove')
-#     to_remove = forms.MultipleChoiceField(required=False)
+    # to_remove = forms.MultipleChoiceField(required=False)
+    products = forms.ModelMultipleChoiceField(
+        queryset=FridgeProduct.objects.none(), # wypełnimy potem
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Selecft products to remove"
+    )
