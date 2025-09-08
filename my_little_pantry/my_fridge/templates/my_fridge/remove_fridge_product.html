@@ -5,12 +5,29 @@
 {% block content %}
 
 
-<h1>Choose product to remove:</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Remove product</button>
-</form>
-<p> </p>
+    <h1>Choose product to remove:</h1>
+
+
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Remove product</button>
+    </form>
+    <p> </p>
 
 {% endblock %}
+
+
+
+    <!-- {% if fridge_products %}
+            {% for product in fridge_products %}
+                <ul>
+                    <li>
+                        <form method="POST">
+                            {% csrf_token %}
+                        <strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}}, use by: {{product.expiry_date}} {{form.as_p}}
+                        </form> 
+                    </li>
+                </ul> -->
+            <!-- {% endfor %} -->
+        <!-- {% endif %} -->

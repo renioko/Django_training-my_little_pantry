@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import FridgeProductForm, DeleteFridgeProduct, ExpiredProductsChecker
+from .forms import FridgeProductForm, DeleteFridgeProduct, ExpiredProductsChecker, DeleteFridgeProductList
 from .models import Product, FridgeProduct, DefaultProduct
 
 # Create your views here.
@@ -30,7 +30,6 @@ def check_expired_view(request):
     """
     Shows the list of expired products and asks for a confirmation to delete them.
     """
-    # if request.method == 'POST':
     fridge_products = FridgeProduct.objects.filter(user=request.user) 
     expired_products = [p for p in fridge_products if not p.is_fresh] # is fresh juz nie jest metodą, tylko atrybutem (przez property)
     if expired_products:
@@ -53,12 +52,9 @@ def remove_expired_fridge_products(request):
             for ep in expired_products:
                 ep.delete()
             messages.success(request, "Expired products removed successfully.")
-            # return render(request, 'fridge.html', )
         else:
             messages.error(request, "No expired products found.")
         return redirect('fridge')
-    # else:
-    #     render(request, 'my_fridge/fridge.html')
 
 def add_by_aggregating_product(product, user):
     """Checks if product id in the fridge. 
@@ -77,7 +73,6 @@ def add_by_aggregating_product(product, user):
     else:
         return False
         
-    
 @login_required
 def add_fridge_product(request):
     if request.method == 'POST':
@@ -142,20 +137,15 @@ def remove_fridge_product(request):
         form = DeleteFridgeProduct(request.user)
         return render(request, 'my_fridge/remove_fridge_product.html', context={'form': form})
 
+@login_required
+def remove_fridge_product_list(request):
+    fridge_products = FridgeProduct.objects.filter(user=request.user)
+    if request.method == 'POST':
+        to_delete_list = request.POST.getlist('to_delete') 
+        to_delete_list = [int(i) for i in to_delete_list if i.isdigit()]
 
+        FridgeProduct.objects.filter(user=request.user, id__in=to_delete_list).delete()
+        messages.success(request, "products deleted.")
 
-    
-
-
-# def aggregate_product(product, user):
-#     fridge_products_quantity = (
-#         FridgeProduct.objects.filter(
-#             user=user, product__name = product.product.name, expiry_date=product.expiry_date
-#             ).aggregate(total=Sum('quantity'))['total'] or 0
-#     )
-# # rozwlekle:
-#     # result = FridgeProduct.objects.aggregate(total=Sum('quantity'))
-#     # total = result['total']
-#     # if total is None:
-#     #     total = 0
-#     return fridge_products_quantity
+        return redirect('fridge')
+    return render(request, 'my_fridge/remove_list_products.html', {'fridge_products': fridge_products} )

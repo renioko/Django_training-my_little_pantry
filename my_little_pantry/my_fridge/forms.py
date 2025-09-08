@@ -43,6 +43,7 @@ class DeleteFridgeProduct(forms.Form):
     removed_product = forms.ChoiceField(label='Product to remove')
     quantity = forms.IntegerField(max_value=1000, min_value=0, required=True)
 
+
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # dynamicznie tworzymy choices tylko dla produktów tego użytkownika - odqolujemy sie do zmiennej removed_product, pod polem w formie, ktore tworzymy powyzej. teraz uzypełniamy je o konkretny wybór
@@ -55,5 +56,9 @@ class DeleteFridgeProduct(forms.Form):
 
 class ExpiredProductsChecker(forms.Form):
     check_for_expired = forms.BooleanField(
-        required=False,
+        required=False, 
         label='Check for expired products')
+
+# class DeleteFridgeProductList(forms.ModelForm):
+#     # to_remove = forms.BooleanField(label='to_remove')
+#     to_remove = forms.MultipleChoiceField(required=False)

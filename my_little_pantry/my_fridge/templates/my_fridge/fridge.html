@@ -27,6 +27,12 @@
         <button type="submit">Remove expired products</button>
     </form>
 
+    <p>Or choose which product you want to remove:</p>
+    
+    <form action="{% url 'remove_list_products' %}" method="get">
+        <button type="submit">Remove fridge products</button>
+    </form>
+    
     {% if default_products %}
         <h1>Default products: </h1>
         <ul>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Remove fridge product {% endblock %}
+
+{% block content %}
+
+    <h1>Choose product to remove:</h1>
+    {% if fridge_products %}
+        <form method="post" action="{% url 'remove_list_products' %}">
+            {% csrf_token %}
+            <ul>
+                {% for product in fridge_products %}
+                    <li>
+                        <label>
+                            <!-- odwoluje sie do product.id a nie do product.product.id bo chce usunac tylko jeden FridgeProduct tego usera -->
+                            <input type="checkbox" name="to_delete" value="{{product.id}}">
+                            <strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}}, use by: {{product.expiry_date}} {{form.as_p}}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul> 
+            <button type="submit">Delete selected</button>
+        </form>
+        <p> </p>
+    {% endif %}
+{% endblock %}
