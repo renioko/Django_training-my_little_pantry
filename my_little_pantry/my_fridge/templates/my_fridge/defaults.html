@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Default fridge products {% endblock %}
+
+{% block content %}
+
+    {% if form.fields.products.queryset %}
+        <h1> Default products: </h1>
+        <p>Tick the products you want to remove and press 'Delete'</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Delete selected</button>
+        </form>
+
+    {% else %}
+        <p>You have no default products yet.</p>
+        
+    {% endif %}
+    <p>  </p>
+
+{% endblock %}
+
+
+
+<!-- 
+    {% if default_products %}
+        <form method="post" action="{% url 'defaults' %}">
+            {% csrf_token %}
+            <ul>
+                {% for product in default_products %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="to_delete" value="product.id">
+                            {{product.product.name}}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="submit"></button>
+        </form>
+    {% else %}
+        <p>You have no defaults products yet.</p>
+    {% endif %}
+        <p> </p> -->

@@ -68,3 +68,11 @@ class DeleteFridgeProductList(forms.Form):
         required=False,
         label="Selecft products to remove"
     )
+
+class RemoveDefaultProducts(forms.Form):
+    products = forms.ModelMultipleChoiceField(
+        queryset=DefaultProduct.objects.none(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Select products to remove'
+    )
