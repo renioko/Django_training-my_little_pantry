@@ -12,6 +12,7 @@ urlpatterns = [
     path('remove_list_products/', remove_fridge_product_list, name='remove_list_products'),
     path('remove_products_form/', remove_products_checkboxes_form, name='remove_products_form'),
     path('defaults/', remove_defaults, name='defaults'),
+
 ]
 
 # to bedzie w aplikacji my_shopping_list

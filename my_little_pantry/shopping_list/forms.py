@@ -53,3 +53,10 @@ class RemoveShoppingList(forms.Form):
         label='Shopping products to remove'
     )
     
+class RemoveDefaultShopping(forms.Form):
+    products = forms.ModelMultipleChoiceField(
+        queryset=DefaultShoppingProduct.objects.none(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Default shopping products to remove'
+    )

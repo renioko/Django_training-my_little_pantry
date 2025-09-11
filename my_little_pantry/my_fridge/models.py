@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    unit = models.CharField(max_length=10)
+    unit = models.CharField(max_length=10) # predefiniowac
 
     def __str__(self):
         return f"{self.name} - unit: {self.unit}"
@@ -22,6 +22,7 @@ class FridgeProduct(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     expiry_date = models.DateField()
     added_at = models.DateTimeField(auto_now_add=True)
+    # dodac default flag
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity} {self.product.unit}"

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from shopping_list.forms import AddShoppingProductForm, GenerateShoppingListActivate, RemoveShoppingList
+from shopping_list.forms import AddShoppingProductForm, GenerateShoppingListActivate, RemoveShoppingList, RemoveDefaultShopping
 from my_fridge.models import Product, DefaultProduct
 from .models import ShoppingListProduct, DefaultShoppingProduct
 from my_fridge.models import DefaultProduct, FridgeProduct
@@ -173,4 +173,20 @@ def remove_shopping_products(request):
         form.fields['products'].queryset = ShoppingListProduct.objects.filter(user=request.user)
     return render(request, 'shopping_list/remove_shopping_products.html', {'form': form})
 
+@login_required
+def remove_default(request):
+    if request.method == "POST":
+        form = RemoveDefaultShopping(request.POST)
+        form.fields['products'].queryset = DefaultShoppingProduct.objects.filter(user=request.user)
 
+        if form.is_valid():
+            products_to_remove = form.cleaned_data['products']
+            product_names = set([str(p.product.name) for p in products_to_remove])
+            products_to_remove.delete()
+            message = "Removed products: " + ", ".join(product_names)
+            messages.success(request, message)
+
+    else:
+        form = RemoveDefaultShopping()
+        form.fields['products'].queryset = DefaultShoppingProduct.objects.filter(user=request.user)
+    return render(request, 'shopping_list/remove_default.html', {'form': form})

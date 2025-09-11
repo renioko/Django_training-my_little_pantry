@@ -11,6 +11,7 @@ class ShoppingListProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     is_important = models.BooleanField(default=False)
+    # default
 
     def __str__(self):
         if self.is_important:

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Delete default shopping products {% endblock %}
+
+{% block content %}
+    {% if form.fields.products.queryset %}
+    <h1> Choose default products to remove:</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Delete selected</button>
+        </form>
+    {% else %}
+        <p>No default products found!</p>
+    {% endif %}
+    <p> </p>
+{% endblock %}
