@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} Remove shopping products {% endblock %}
+
+{% block content %}
+
+    {% if form.fields.products.queryset %}
+        <h1>Choose which shopping list products to remove: </h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Delete selected</button>
+        </form>
+    {% else %}
+        <p>Opps! Your shopping list is empty!</p>
+    {% endif %}
+    <p> </p>
+{% endblock %}

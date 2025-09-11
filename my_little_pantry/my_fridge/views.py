@@ -172,7 +172,7 @@ def remove_products_checkboxes_form(request):
 def remove_defaults(request):
     if request.method == 'POST':
         form = RemoveDefaultProducts(request.POST)
-        products = form.fields['products'].queryset = DefaultProduct.objects.filter(user=request.user)
+        form.fields['products'].queryset = DefaultProduct.objects.filter(user=request.user)
         # powyżej podmieniam wartosci wywołane w form - tam jest wywolana ogolnie klasa, bez konkretnych produktów. tutaj ustawiam, że chodzi o DEfaultProducts tego uzytkownika - odwoluje sie do pola 'products' i atrybutu queryset, ktorego wynik podmieniam na produkty uzytkownika
 
         if form.is_valid():
@@ -180,10 +180,6 @@ def remove_defaults(request):
             # tu powyzej pobieram juz odpowiednio podstawione dane z pola products
             product_names = [str(p.product.name) for p in products_to_delete]
             products_to_delete.delete()
-            # messages.success(request, "Products removed:")
-            # for p in products_to_delete:
-            #     messages.success(request, f"{p}")
-            # for n in product_names:
             message = 'Products removed:'+ ', '.join(product_names)
             messages.success(request, message)
 
