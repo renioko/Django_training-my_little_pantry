@@ -14,6 +14,3 @@ urlpatterns = [
     path('defaults/', remove_defaults, name='defaults'),
 
 ]
-
-# to bedzie w aplikacji my_shopping_list
-    # path('list/', shopping_list, name='shopping_list')
