@@ -190,3 +190,18 @@ def remove_default(request):
         form = RemoveDefaultShopping()
         form.fields['products'].queryset = DefaultShoppingProduct.objects.filter(user=request.user)
     return render(request, 'shopping_list/remove_default.html', {'form': form})
+
+@login_required
+def remove_all(request):
+    products = ShoppingListProduct.objects.filter(user=request.user)
+    if request.method == 'POST':
+        try:
+            products.delete()
+            messages.success(request, 'Shopping list emptied successfully.')
+        except Exception as e:
+            messages.error(request, f'Error while emptying shopping  list: {e}')
+        return redirect('shopping_list')
+
+    return render(request, 'shopping_list/shopping_list.html', {'products': products})
+
+

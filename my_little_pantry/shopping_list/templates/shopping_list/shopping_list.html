@@ -4,13 +4,6 @@
 
 {% block content %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{message.tags}}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
 
     <h1>Shopping list:</h1>
     {% if products %}
@@ -26,6 +19,13 @@
         {{ form.as_p }}
         <p>Now you can check if something is missing in the fridge and generate shopping list!</p>
         <button type="submit"> Generate shopping list</button>
+    </form>
+
+    <h2>You can clear shopping list with one click:</h2>
+
+    <form action="{% url 'remove_all' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Are you sure you want to remove all products?')">Clear shopping list</button>
     </form>
     <p> </p>
 

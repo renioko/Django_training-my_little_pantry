@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import shopping_list, add_product_to_shopping_list, remove_shopping_products, remove_default
+from .views import shopping_list, add_product_to_shopping_list, remove_shopping_products, remove_default, remove_all
 
 urlpatterns = [
     path('', shopping_list, name='shopping_list'),

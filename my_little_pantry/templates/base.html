@@ -21,14 +21,14 @@
 <a href="{% url 'login' %}">Login</a>
 {% endif %}
 </header>
-    <!-- Wiadomości globalne -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+<!-- Wiadomości globalne -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 <main>
     {% block content %}{% endblock %}
 </main>
