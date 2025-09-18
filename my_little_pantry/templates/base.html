@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title> {% block title %}My little pantry{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'my_fridge/fridge.css' %}">
+    <link rel="stylesheet" href="{% static 'static/global.css' %}">
+    {% block extra_css %}{% endblock %}
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'my_fridge/fridge.css' %}"> -->
     {% block extra_head %} {% endblock %}
 </head>
+
 <body>
 <header>
 {% if user.is_authenticated %}
@@ -21,10 +24,12 @@
 <a href="{% url 'login' %}">Login</a>
 {% endif %}
 </header>
+
 <!-- Wiadomości globalne -->
 {% if messages %}
     {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
+
+        <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-{{ message.tags }}{% endif %}">
             {{ message }}
         </div>
     {% endfor %}

@@ -1,15 +1,3 @@
-.fresh strong {
-    color: green;
-}
-
-.expired strong {
-    color: red;
-}
-
-.default {
-    color: darkgreen;
-}
-
 .alert {
     padding: 10px;
     margin: 10px 0;
@@ -19,11 +7,7 @@
     background-color: #d4edda;
     color: #155724;
 }
-.alert-error {
+.alert-error, .alert-danger {
     background-color: #f8d7da;
     color: #721c24;
-}
-
-.important strong{
-    color: red;
 }

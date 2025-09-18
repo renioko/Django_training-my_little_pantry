@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'shopping_list/css/shopping.css' %}"> 
+{% endblock %}
+
+{% block sidebar %}
+    <ul>
+    <li><a href="{% url 'shopping_list' %}">My Shopping List</a></li>
+    <li><a href="{% url 'shopping_defaults' %}">Default Products</a></li>
+    <li><a href="{% url 'add_product_to_shopping_list' %}">Add Product</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %} {% endblock %}
+
