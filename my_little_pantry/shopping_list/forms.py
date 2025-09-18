@@ -60,3 +60,12 @@ class RemoveDefaultShopping(forms.Form):
         required=False,
         label='Default shopping products to remove'
     )
+
+# class UpdateShoppingForm(forms.Form):
+#     products = forms.ModelFormOptions(
+#         queryset=ShoppingListProduct.objects.none()
+#         model=ShoppingListProduct,
+#         # fields=[],
+#         widget=forms.TypedChoiceField,
+#         labels='Edutuj wybrany produkt'
+#     )

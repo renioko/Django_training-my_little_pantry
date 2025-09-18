@@ -1,8 +1,11 @@
 from django.db.models import Sum, F
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.generic import UpdateView, ListView
 
 from shopping_list.forms import AddShoppingProductForm, GenerateShoppingListActivate, RemoveShoppingList, RemoveDefaultShopping
 from my_fridge.models import Product, DefaultProduct
@@ -11,6 +14,7 @@ from my_fridge.models import DefaultProduct, FridgeProduct
 from my_fridge.views import index
 from typing import List, Any, Set
 
+from rest_framework.generics import ListAPIView
 # Create your views here.
 
 # def index()
@@ -153,7 +157,8 @@ def add_product_to_shopping_list(request):
             
     else:
         form = AddShoppingProductForm()
-    
+        
+    messages.info(request, "Widok add_product_to_shopping_list został wyrenderowany.")
     return render(request, 'add_product_to_shopping_list.html', context={'form': form})
 
 @login_required
@@ -204,4 +209,66 @@ def remove_all(request):
 
     return render(request, 'shopping_list/shopping_list.html', {'products': products})
 
+@method_decorator(login_required, name='dispatch')  
+class ListShoppingProductsView(ListView):
+    allow_empty = True
+    model = ShoppingListProduct
+    http_method_names = ['get', 'post']
+    template_name = 'shopping_list/update.html'
+    context_object_name = 'products'
 
+    def get_queryset(self): # zwraca object_list
+        return super().get_queryset().filter(user=self.request.user)
+
+# co mi zwraca listview:
+# object_list – zawsze dostępne, nawet jeśli nie ustawie nazwy
+# context_object_name – najlepsze rozwiązanie, daje kontrolę i spójność ( np. products).
+# shoppinglistproduct_list – raczej nie używa się, to taki „bonus” Django.
+
+@method_decorator(login_required, name='dispatch')
+class UpdateShoppingProducts(UpdateView):
+    model = ShoppingListProduct
+    template_name = 'shopping_list/edit_product.html'
+    fields = ['quantity'] # albo moze jeszcze 'unit'
+
+    success_url=reverse_lazy('shopping_list')
+
+
+
+from rest_framework import serializers
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+
+class ShoppingProductSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = ShoppingListProduct
+        fields = '__all__'
+
+        # fields = ['id']
+
+@method_decorator(login_required, name='dispatch')  
+class ListShoppingProductsAPIView(ListAPIView):
+    queryset = ShoppingListProduct.objects.all()
+    serializer_class = ShoppingProductSerializer
+
+# class PostBulkDeleteView(APIView):
+#     def delete(self, request, *args, **kwargs):
+#         ids = request.data.get("ids", [])
+#         if not ids:
+#         return Response({"detail": "Brak listy ID."}, status=status.HTTP_400_BAD_REQUEST)
+
+#         posts = Post.objects.filter(id__in=ids)
+#         deleted_count = posts.count()
+#         posts.delete()
+
+#         return Response(
+#         {"detail": f"Usunięto {deleted_count} postów."},
+#         status=status.HTTP_204_NO_CONTENT
+        # )

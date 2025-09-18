@@ -1,14 +1,13 @@
-{% extends "base.html" %}
+{% extends "shopping_base.html" %}
 
 {% block title %} Shopping list {% endblock %}
 
 {% block content %}
 
-
     <h1>Shopping list:</h1>
     {% if products %}
         {% for product in products %}
-            <li><strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}} {{is_important}} </li>
+            <li class="{% if product.is_important %}important{% endif %}"><strong>{{product.product.name}}</strong> {{product.quantity}} {{product.product.unit}} {{product.is_important}} </li>
         {% endfor %}
     {% else %}
         <p>Your Shopping list is empty!</p>

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class ShoppingListProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=1) # albo float
     is_important = models.BooleanField(default=False)
     # default
 
@@ -20,7 +20,8 @@ class ShoppingListProduct(models.Model):
             is_important = ''
 
         return f"{self.product.name} - {self.quantity} {self.product.unit} {is_important}"
-    
+
+
     def is_default_shopping_product(self):
         """Checks if product is exist as Default product."""
         return DefaultShoppingProduct.objects.filter(
