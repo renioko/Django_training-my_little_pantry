@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %} Update products {% endblock %}
+
+{% block content %}
+
+    {% if products %}
+
+        {% for product in products %}
+        <ul>
+            <li><strong>{{product.product.name}}</strong> - {{product.quantity}} {{product.product.unit}} <a href="{% url 'edit_product' product.pk %}">Edit</a></li>
+        </ul>        
+        {% endfor %}
+    {% else %}
+    <p>Shoping list is empty</p>
+    {% endif %}
+
+{% endblock %}
