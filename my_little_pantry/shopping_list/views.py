@@ -229,12 +229,20 @@ class ListShoppingProductsView(ListView):
 class UpdateShoppingProducts(UpdateView):
     model = ShoppingListProduct
     template_name = 'shopping_list/edit_product.html'
-    fields = ['quantity'] # albo moze jeszcze 'unit'
+    fields = ['quantity']
 
     success_url=reverse_lazy('shopping_list')
 
+    def form_valid(self, form):
+        messages.success(self.request, "Product updated successfully.")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Product could not be updated.')
+        return super().form_invalid(form)
 
 
+#  ============ PLAYING WITH API ==========
 from rest_framework import serializers
 from django.contrib.auth.models import User
 

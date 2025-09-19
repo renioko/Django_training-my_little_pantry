@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title> {% block title %}My little pantry{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'static/global.css' %}">
+    
     {% block extra_css %}{% endblock %}
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'my_fridge/fridge.css' %}"> -->
+    <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'my_fridge/fridge.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'shopping_list/shopping.css' %}"> -->
     {% block extra_head %} {% endblock %}
 </head>
 
@@ -25,6 +27,13 @@
 {% endif %}
 </header>
 
+{% comment %}
+<!-- Sidebar -->
+<aside>
+    {% block sidebar %}{% endblock %}
+</aside>
+{% endcomment %}
+
 <!-- Wiadomości globalne -->
 {% if messages %}
     {% for message in messages %}
@@ -35,8 +44,18 @@
     {% endfor %}
 {% endif %}
 <main>
-    {% block content %}{% endblock %}
+
+    <div class="container">
+        <div class="sidebar">
+        {% block sidebar %}{% endblock %}
+        </div>
+        <div class="main-content">
+        {% block content %}{% endblock %}
+        </div>
+    </div>
+
 </main>
+
 <footer>
     <form action="{% url 'index' %}" method="get">
         <button type="submit">Back to home page</button>
